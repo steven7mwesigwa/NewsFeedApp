@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
-     * Helper methods related to requesting and receiving earthquake data from USGS.
+     * Helper methods related to requesting and receiving newsfeed data from GUARDIAN_API.
      */
     public final class QueryUtils {
 
@@ -77,7 +77,7 @@ import java.util.List;
                     Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
                 }
             } catch (IOException e) {
-                Log.e(LOG_TAG, "Problem retrieving the earthquake JSON results.", e);
+                Log.e(LOG_TAG, "Problem retrieving the newsfeed JSON results.", e);
             } finally {
                 if (urlConnection != null) {
                     urlConnection.disconnect();
@@ -111,17 +111,17 @@ import java.util.List;
         }
 
         /**
-         * Return a list of {@link Earthquake} objects that has been built up from
+         * Return a list of {@link NewsFeed} objects that has been built up from
          * parsing the given JSON response.
          */
-        private static List<Earthquake> extractFeatureFromJson(String earthquakeJSON) {
+        private static List<NewsFeed> extractDataFromJson(String newsfeedJSON) {
             // If the JSON string is empty or null, then return early.
-            if (TextUtils.isEmpty(earthquakeJSON)) {
+            if (TextUtils.isEmpty(newsfeedJSON)) {
                 return null;
             }
 
-            // Create an empty ArrayList that we can start adding earthquakes to
-            List<Earthquake> earthquakes = new ArrayList<>();
+            // Create an empty ArrayList that we can start adding newsfeeds to
+            List<NewsFeed> newsfeedsList = new ArrayList<>();
 
             // Try to parse the JSON response string. If there's a problem with the way the JSON
             // is formatted, a JSONException exception object will be thrown.
@@ -129,58 +129,58 @@ import java.util.List;
             try {
 
                 // Create a JSONObject from the JSON response string
-                JSONObject baseJsonResponse = new JSONObject(earthquakeJSON);
+                JSONObject baseJsonResponse = new JSONObject(newsfeedJSON);
 
-                // Extract the JSONArray associated with the key called "features",
-                // which represents a list of features (or earthquakes).
-                JSONArray earthquakeArray = baseJsonResponse.getJSONArray("features");
+                // Extract the JSONObject associated with the key called "response"
+                JSONObject newsfeedObject = baseJsonResponse.getJSONObject("response");
 
-                // For each earthquake in the earthquakeArray, create an {@link Earthquake} object
-                for (int i = 0; i < earthquakeArray.length(); i++) {
+                // Extract the JSONArray associated with the key called "results",
+                // which represents a list of responses (or newsfeeds).
+                JSONArray jsonArray = newsfeedObject.getJSONArray("results");
 
-                    // Get a single earthquake at position i within the list of earthquakes
-                    JSONObject currentEarthquake = earthquakeArray.getJSONObject(i);
+                // For each newsfeed in the jsonArray, create an {@link NewsFeed} object
+                for (int i = 0; i < jsonArray.length(); i++) {
 
-                    // For a given earthquake, extract the JSONObject associated with the
-                    // key called "properties", which represents a list of all properties
-                    // for that earthquake.
-                    JSONObject properties = currentEarthquake.getJSONObject("properties");
+                    // Get a single newsfeed at position i within the list of newsfeeds
+                    JSONObject currentNewsfeed = jsonArray.getJSONObject(i);
 
-                    // Extract the value for the key called "mag"
-                    double magnitude = properties.getDouble("mag");
+                    String newsFeedTitle = currentNewsfeed.getString("webTitle");
+                    JSONObject fieldsKey = currentNewsfeed.getJSONObject("fields");
+                    String newsFeedBodyText = fieldsKey.getString("bodyText");
+                    String newsFeedSection = currentNewsfeed.getString("sectionName");
+                    String newsFeedPublicationDate = currentNewsfeed.getOptString("webPublicationDate");
+                    JSONArray tagsKey = currentNewsfeed.getJSONArray("tags");
+                    String newsFeedContributor = "";
+                    for (int j = 0; j < tagsKey.length(); j++) {
+                        JSONObject contributors = tagsKey.getJSONObject(j);
+                         newsFeedContributor =  contributors.getOptString("webTitle");
+                         break;
+                    }
+                    String newsFeedUrl = currentNewsfeed.getString("webUrl");
 
-                    // Extract the value for the key called "place"
-                    String location = properties.getString("place");
+                    // Create a new {@link NewsFeed} object with the data
+                    //  from the JSON response.
+                    NewsFeed newsfeed = new NewsFeed(newsFeedTitle, newsFeedBodyText, newsFeedSection, newsFeedPublicationDate, newsFeedContributor, newsFeedUrl);
 
-                    // Extract the value for the key called "time"
-                    long time = properties.getLong("time");
-
-                    // Extract the value for the key called "url"
-                    String url = properties.getString("url");
-
-                    // Create a new {@link Earthquake} object with the magnitude, location, time,
-                    // and url from the JSON response.
-                    Earthquake earthquake = new Earthquake(magnitude, location, time, url);
-
-                    // Add the new {@link Earthquake} to the list of earthquakes.
-                    earthquakes.add(earthquake);
+                    // Add the new {@link NewsFeed} to the list of newsfeeds.
+                    newsfeedsList.add(newsfeed);
                 }
 
             } catch (JSONException e) {
                 // If an error is thrown when executing any of the above statements in the "try" block,
                 // catch the exception here, so the app doesn't crash. Print a log message
                 // with the message from the exception.
-                Log.e("QueryUtils", "Problem parsing the earthquake JSON results", e);
+                Log.e("QueryUtils", "Problem parsing the newsfeed JSON results", e);
             }
 
-            // Return the list of earthquakes
-            return earthquakes;
+            // Return the list of newsfeeds
+            return newsfeedsList;
         }
 
     /**
-     * Query the USGS dataset and return a list of {@link Earthquake} objects.
+     * Query the GUARDIAN_API dataset and return a list of {@link NewsFeed} objects.
      */
-    public static List<Earthquake> fetchEarthquakeData(String requestUrl) {
+    public static List<NewsFeed> fetchNewsfeedData(String requestUrl) {
         // Create URL object
         URL url = createUrl(requestUrl);
 
@@ -192,11 +192,11 @@ import java.util.List;
             Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
 
-        // Extract relevant fields from the JSON response and create a list of {@link Earthquake}s
-        List<Earthquake> earthquakes = extractFeatureFromJson(jsonResponse);
+        // Extract relevant fields from the JSON response and create a list of {@link NewsFeed}s
+        List<NewsFeed> newsfeedsList = extractDataFromJson(jsonResponse);
 
-        // Return the list of {@link Earthquake}s
-        return earthquakes;
+        // Return the list of {@link NewsFeed}s
+        return newsfeedsList;
     }
 
     }

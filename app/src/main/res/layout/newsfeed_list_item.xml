@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/rectangular_shape"
+    android:paddingStart="16dp"
+    android:paddingLeft="16dp"
+    android:paddingEnd="16dp"
+    android:paddingRight="16dp">
+
+        <TextView
+            android:id="@+id/newsFeedTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:paddingTop="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:maxLines="2"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            tools:text="Gotabaya Rajapaksa elected president of Sri Lanka" />
+
+        <TextView
+            android:id="@+id/newsFeedBodyText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            tools:text="Sri Lanka’s former wartime defence minister Gotabaya Rajapaksa, part of the country’s most powerful political dynasty, has been elected president, raising fears about the future of human rights and religious harmony in the region. Gotabaya Rajapaksa, the candidate for the SLPP, the Sinhalese-Buddhist nationalist party, claimed an easy victory in the presidential election held on Saturday, which had been fought against the backdrop of some of the worst political instability and violence the country has seen since the end of the civil war a decade ago." />
+
+        <TextView
+            android:id="@+id/newsFeedSection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-medium"
+            android:maxLines="1"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/rectangular_shape_light_grey"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            tools:text="Politics" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/newsFeedPublicationDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorMidGrey"
+            android:textSize="14sp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="30dp"
+            tools:text="Mar 6, 2010" />
+
+        <TextView
+            android:id="@+id/newsFeedContributor"
+            android:layout_toEndOf="@id/newsFeedPublicationDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorMidGrey"
+            android:textSize="14sp"
+            android:layout_marginBottom="5dp"
+            tools:text="Hannah Ellis-Petersen" />
+
+    </RelativeLayout>
+</LinearLayout>

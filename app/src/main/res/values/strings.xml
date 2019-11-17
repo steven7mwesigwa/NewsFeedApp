@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">QuakeApp</string>
-    <!-- Default text to show with the earthquake location ("Near the Pacific-Antarctic Ridge")
- if no specific kilometer distance from the primary location is given [CHAR LIMIT=30] -->
-    <string name="near_the">Near the</string>
-    <!-- Text to display in the list when there are no earthquakes [CHAR LIMIT=NONE] -->
-    <string name="no_earthquakes">No earthquakes found.</string>
+    <string name="app_name">NewsFeedApp</string>
+    <!-- Text to display in the list when there are no Articles [CHAR LIMIT=NONE] -->
+    <string name="no_newsfeed">No News Article Found.</string>
     <!-- Error message when there is no internet connectivity [CHAR LIMIT=NONE] -->
     <string name="no_internet_connection">No internet connection.</string>
     <string name="settings_menu_item">Settings</string>
-    <string name="settings_title">Earthquake Settings</string>
+    <string name="settings_title">Newsfeed Settings</string>
 
     <string name="settings_min_magnitude_label">Minimum Magnitude</string>
     <string name="settings_min_magnitude_key" translatable="false">min_magnitude</string>
