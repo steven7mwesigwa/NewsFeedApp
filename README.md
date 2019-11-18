@@ -1,5 +1,4 @@
 # NewsFeedApp
-=======================
 
 A news feed app that interacts with the 'Guardian API' https://open-platform.theguardian.com/documentation/ to display snapshots of the latest news around the world.
 
