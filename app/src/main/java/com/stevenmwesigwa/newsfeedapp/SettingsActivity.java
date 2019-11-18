@@ -22,8 +22,8 @@ public class SettingsActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.settings_main);
 
-            Preference minMagnitude = findPreference(getString(R.string.settings_min_magnitude_key));
-            bindPreferenceSummaryToValue(minMagnitude);
+            Preference fromDate = findPreference(getString(R.string.settings_from_date_key));
+            bindPreferenceSummaryToValue(fromDate);
         }
 
         @Override

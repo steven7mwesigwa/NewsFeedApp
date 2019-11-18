@@ -46,7 +46,7 @@ public class NewsFeedActivity extends AppCompatActivity
 
     /** URL for newsfeed data from the GUARDIAN_API dataset */
     private static final String GUARDIAN_API_REQUEST_URL =
-            "http://content.guardianapis.com/search?&show-tags=contributor&api-key=test&show-fields=bodyText";
+            "http://content.guardianapis.com/search?&show-tags=contributor&api-key=f8c2758c-299b-40f3-a4bc-8748cc0c6441&show-fields=bodyText";
 
     /**
      * Constant value for the newsfeed loader ID. We can choose any integer.
@@ -126,13 +126,13 @@ public class NewsFeedActivity extends AppCompatActivity
             loadingIndicator.setVisibility(View.GONE);
 
             // Update empty state with no connection error message
-            mEmptyStateTextView.setText(R.string.no_internet_connection);
+            mEmptyStateTextView.setText(getString(R.string.no_internet_connection));
         }
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-        if (key.equals(getString(R.string.settings_min_magnitude_key)) ||
+        if (key.equals(getString(R.string.settings_from_date_key)) ||
                 key.equals(getString(R.string.settings_order_by_key))){
             // Clear the ListView as a new query will be kicked off
             mAdapter.clear();
@@ -153,9 +153,9 @@ public class NewsFeedActivity extends AppCompatActivity
     public Loader<List<NewsFeed>> onCreateLoader(int i, Bundle bundle) {
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String minMagnitude = sharedPrefs.getString(
-                getString(R.string.settings_min_magnitude_key),
-                getString(R.string.settings_min_magnitude_default));
+        String fromDate = sharedPrefs.getString(
+                getString(R.string.settings_from_date_key),
+                getString(R.string.settings_from_date_default));
 
         String orderBy = sharedPrefs.getString(
                 getString(R.string.settings_order_by_key),
@@ -165,8 +165,8 @@ public class NewsFeedActivity extends AppCompatActivity
         Uri baseUri = Uri.parse(GUARDIAN_API_REQUEST_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
-//        uriBuilder.appendQueryParameter("minmag", minMagnitude);
-//        uriBuilder.appendQueryParameter("orderby", orderBy);
+        uriBuilder.appendQueryParameter(getString(R.string.settings_from_date_key), fromDate);
+        uriBuilder.appendQueryParameter(getString(R.string.settings_order_by_key), orderBy);
 
         return new NewsFeedLoader(this, uriBuilder.toString());
     }
@@ -181,7 +181,7 @@ public class NewsFeedActivity extends AppCompatActivity
         mEmptyStateTextView.setText(R.string.no_newsfeed);
 
         // Clear the adapter of previous newsfeed data
-        //mAdapter.clear();
+//        mAdapter.clear();
 
         // If there is a valid list of {@link NewsFeed}s, then add them to the adapter's
         // data set. This will trigger the ListView to update.

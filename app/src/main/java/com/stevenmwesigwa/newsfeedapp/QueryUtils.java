@@ -148,12 +148,12 @@ import java.util.List;
                     JSONObject fieldsKey = currentNewsfeed.getJSONObject("fields");
                     String newsFeedBodyText = fieldsKey.getString("bodyText");
                     String newsFeedSection = currentNewsfeed.getString("sectionName");
-                    String newsFeedPublicationDate = currentNewsfeed.getOptString("webPublicationDate");
+                    String newsFeedPublicationDate = currentNewsfeed.optString("webPublicationDate");
                     JSONArray tagsKey = currentNewsfeed.getJSONArray("tags");
                     String newsFeedContributor = "";
                     for (int j = 0; j < tagsKey.length(); j++) {
                         JSONObject contributors = tagsKey.getJSONObject(j);
-                         newsFeedContributor =  contributors.getOptString("webTitle");
+                         newsFeedContributor =  contributors.optString("webTitle");
                          break;
                     }
                     String newsFeedUrl = currentNewsfeed.getString("webUrl");
